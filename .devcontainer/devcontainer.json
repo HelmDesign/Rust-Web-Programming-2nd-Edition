@@ -47,7 +47,7 @@
           "editor.defaultFormatter": "rust-lang.rust-analyzer",
           "editor.formatOnSave": true,
           "editor.codeActionsOnSave": {
-            "source.organizeImports": true
+            "source.organizeImports": "explicit"
           }
         },
         "rust-analyzer.checkOnSave.command": "clippy",
@@ -62,7 +62,7 @@
           "editor.defaultFormatter": "ms-python.black-formatter",
           "editor.formatOnSave": true,
           "editor.codeActionsOnSave": {
-            "source.organizeImports": true
+            "source.organizeImports": "explicit"
           }
         },
         "python.linting.enabled": true,
@@ -130,6 +130,6 @@
   },
   "postCreateCommand": ". $HOME/.cargo/env && echo 'DevContainer initialized successfully!' && rustc --version && node --version && python3 --version && docker --version && terraform --version",
   "onCreateCommand": "echo 'Setting up development environment...'",
-  "updateContentCommand": "source $HOME/.cargo/env && rustup update && cargo update",
+  "updateContentCommand": ". $HOME/.cargo/env && rustup update",
   "waitFor": "onCreateCommand"
 }
