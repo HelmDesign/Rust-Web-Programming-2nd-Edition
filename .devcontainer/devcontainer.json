@@ -1,55 +1,34 @@
 {
   "name": "Rust Web Programming",
-  "dockerfile": "Dockerfile",
-  "context": "..",
-  
-  // Build arguments
   "build": {
     "dockerfile": "Dockerfile",
     "context": ".."
   },
-
-  // Container configuration
-  "remoteUser": "devuser",
-  "workspaceFolder": "/workspace",
-
-  // Mount the local directory into the container
+  "remoteUser": "vscode",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "mounts": [
-    "source=${localEnv:HOME}/.ssh,target=/home/devuser/.ssh,type=bind,consistency=cached",
-    "source=${localEnv:HOME}/.gitconfig,target=/home/devuser/.gitconfig,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.gitconfig,target=/home/vscode/.gitconfig,type=bind,consistency=cached",
     "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
   ],
-
-  // VS Code Extensions
   "customizations": {
     "vscode": {
       "extensions": [
-        // Rust
         "rust-lang.rust-analyzer",
         "vadimcn.vscode-lldb",
         "serayuzgur.crates",
         "fill-labs.dependi",
-        
-        // Web Development
         "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode",
         "xabikos.JavaScriptSnippets",
-        
-        // Python
         "ms-python.python",
         "ms-python.vscode-pylance",
         "ms-python.debugpy",
         "ms-python.black-formatter",
         "charliermarsh.ruff",
-        
-        // Docker
         "ms-azuretools.vscode-docker",
-        
-        // Terraform
         "hashicorp.terraform",
         "hashicorp.hcl",
-        
-        // General Development Tools
         "eamodio.gitlens",
         "GitHub.copilot",
         "ms-vscode.remote-explorer",
@@ -59,16 +38,11 @@
         "ms-azuretools.vscode-apimanagement",
         "humao.rest-client",
         "rangav.vscode-thunder-client",
-        
-        // Code Quality
         "SonarSource.sonarlint-vscode",
-        
-        // Markdown
         "yzhang.markdown-all-in-one",
         "DavidAnson.vscode-markdownlint"
       ],
       "settings": {
-        // Rust settings
         "[rust]": {
           "editor.defaultFormatter": "rust-lang.rust-analyzer",
           "editor.formatOnSave": true,
@@ -84,8 +58,6 @@
           "-W",
           "clippy::all"
         ],
-        
-        // Python settings
         "[python]": {
           "editor.defaultFormatter": "ms-python.black-formatter",
           "editor.formatOnSave": true,
@@ -96,8 +68,6 @@
         "python.linting.enabled": true,
         "python.linting.ruffEnabled": true,
         "python.testing.pytestEnabled": true,
-        
-        // JavaScript/Node settings
         "[javascript]": {
           "editor.defaultFormatter": "esbenp.prettier-vscode",
           "editor.formatOnSave": true
@@ -110,14 +80,10 @@
           "editor.defaultFormatter": "esbenp.prettier-vscode",
           "editor.formatOnSave": true
         },
-        
-        // Terraform settings
         "[hcl]": {
           "editor.defaultFormatter": "hashicorp.terraform",
           "editor.formatOnSave": true
         },
-        
-        // General editor settings
         "editor.formatOnSave": true,
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.rulers": [80, 100, 120],
@@ -125,8 +91,6 @@
         "files.insertFinalNewline": true,
         "editor.wordWrap": "on",
         "editor.minimap.enabled": false,
-        
-        // Terminal settings
         "terminal.integrated.defaultProfile.linux": "bash",
         "terminal.integrated.profiles.linux": {
           "bash": {
@@ -137,21 +101,17 @@
       }
     }
   },
-
-  // Port forwarding
   "forwardPorts": [
-    3000,     // Node.js default
-    5000,     // Python Flask default
-    8000,     // Python Django default
-    8080,     // General web service
-    8443,     // HTTPS
-    3000,     // Postman Newman default
-    5432,     // PostgreSQL
-    6379,     // Redis
-    27017,    // MongoDB
-    9090      // Prometheus/Grafana
+    3000,
+    5000,
+    8000,
+    8080,
+    8443,
+    5432,
+    6379,
+    27017,
+    9090
   ],
-
   "portsAttributes": {
     "3000": { "label": "Application", "onAutoForward": "notify" },
     "5000": { "label": "Flask", "onAutoForward": "notify" },
@@ -163,25 +123,13 @@
     "27017": { "label": "MongoDB", "onAutoForward": "notify" },
     "9090": { "label": "Prometheus", "onAutoForward": "notify" }
   },
-
-  // Environment variables
   "remoteEnv": {
     "RUST_LOG": "debug",
     "PYTHONUNBUFFERED": "1",
     "NODE_ENV": "development"
   },
-
-  // Post-create command
-  "postCreateCommand": "echo 'DevContainer initialized successfully!' && rustc --version && node --version && python3 --version && docker --version && terraform --version",
-
-  // Features (optional - uncomment to use pre-built features)
-  // "features": {
-  //   "ghcr.io/devcontainers/features/git:1": {},
-  //   "ghcr.io/devcontainers/features/github-cli:1": {}
-  // }
-
-  // Lifecycle scripts
+  "postCreateCommand": ". $HOME/.cargo/env && echo 'DevContainer initialized successfully!' && rustc --version && node --version && python3 --version && docker --version && terraform --version",
   "onCreateCommand": "echo 'Setting up development environment...'",
-  "updateContentCommand": "rustup update && cargo update",
+  "updateContentCommand": "source $HOME/.cargo/env && rustup update && cargo update",
   "waitFor": "onCreateCommand"
 }
