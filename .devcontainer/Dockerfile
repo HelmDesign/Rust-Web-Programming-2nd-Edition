@@ -16,7 +16,6 @@ RUN apt-get update \
         nodejs \
         npm \
         docker.io \
-        docker-compose-plugin \
         unzip \
     && rm -rf /var/lib/apt/lists/* \
     && curl -fsSL https://sh.rustup.rs | sh -s -- -y --profile minimal \
